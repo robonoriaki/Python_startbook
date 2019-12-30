@@ -8,5 +8,6 @@ class Dice:
     face_num = 6
     
     #サイコロを振る動作を再現したメソッド
+    ##メソッドを書くときは常に引数を1つ書かなければらなず、それをselfにするのが決まりごと
     def shoot(self):
         return random.randint(1,6)
