@@ -6,8 +6,14 @@ import random
 class Dice:
     #初期化メソッド
     #これもメソッドなので、引数にselfを書く必要がある
-    #正多面体の面の数を受け取る
-    def __init__(self, val):
+    #正多面体の面の数を受け取る（4、6、8、12、20）
+    def __init__(self, val = 6):
+        #エラーを発生させるにはraiseを使う
+        #ここでは一般的な例外を示すExceptionを使う、これはエラーを示すデータ型
+        #not in でその値がリストになければTrueを返す
+        if val not in [4,6,8,12,20]:
+            raise Exception('Not exist')
+        
         #valをface_numに代入して面の数を保存する
         #クラス内で使うのでアトリビュートにする、そのためself.face_numとする
         self.face_num = val
