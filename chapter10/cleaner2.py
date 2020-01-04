@@ -22,7 +22,12 @@ class Kame(turtle.Turtle):
         xe = self.getscreen().window_width() / 2.0
         ye = self.getscreen().window_height() / 2.0
         
+    #壁に当たってターンする動きをする 
     def hit_wall(self):
+        #カメの角度、現在のx、y座標を渡す
+        line = Line(self.heading(), self.xcor, self.ycor)
+        rand_angle = random.random() * PI
+        
         
         
 
@@ -37,16 +42,18 @@ class Kame(turtle.Turtle):
 class Line:
     def __init__(self, angle, x0, y0):
         #引数をこのデータ型のアトリビュートに設定
-        self.angle = float(angle)
+        self.a = math.tan(float(angle))
         self.x0 = float(x0)
         self.y0 = float(y0)
         
+    #直線の式
+    #(y - y0) / (x - x0) = tan(theta) 
     #ウィンドウのx軸の限界（x）まで行ったときのy座標を計算する
     def get_y(self, x):
-        endy = self.angle * (x - self.x0) + self.y0
+        endy = self.a * (x - self.x0) + self.y0
         return endy
     
     #ウィンドウのy軸の限界（y）まで行ったときのx座標を計算する
     def get_x(self, y):
-        endx = self.x0 * (y - self.y0) / self.angle
+        endx = self.x0 + (y - self.y0) / self.a
         return endx
