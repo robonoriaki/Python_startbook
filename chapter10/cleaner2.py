@@ -44,10 +44,6 @@ class Kame(turtle.Turtle):
         #その後、処理を加える
         self.shape('turtle')
         self.shapesize(2,2,3)
-        #ウィンドウの幅と高さを得る
-        #そこからx軸、y軸の最大値を得る
-        self.xe = self.getscreen().window_width() / 2.0
-        self.ye = self.getscreen().window_height() / 2.0
         #ペンの幅を10にする
         self.width(10)
         #背景色を変更
@@ -60,49 +56,57 @@ class Kame(turtle.Turtle):
         
     #壁に当たってターンする動きをする 
     def hit_wall(self):
+        #ウィンドウの幅と高さを得る
+        #そこからx軸、y軸の最大値を得る
+        xe = self.getscreen().window_width() / 2.0
+        ye = self.getscreen().window_height() / 2.0
+        print('xe = {}'.format(xe))
+        print('ye = {}'.format(ye))
         #カメの角度、現在のx、y座標を渡す
         line = Line(self.heading(), self.xcor(), self.ycor())
         #角度を乱数で得る
         rand_angle = random.random() * PI
         #四隅までの角度を計算
-        upleft = self.towards(-1 * self.xe, self.ye)
-        upright = self.towards(self.xe, self.ye)
-        loleft = self.towards(-1 * self.xe, -1 * self.ye)
-        loright = self.towards(self.xe, -1 * self.ye)
+        upleft = self.towards(-1 * xe, ye)
+        upright = self.towards(xe, ye)
+        loleft = self.towards(-1 * xe, -1 * ye)
+        loright = self.towards(xe, -1 * ye)
         
         #上の辺にぶつかる場合
         if upleft > self.heading() >= upright:
             #print('up')
-            des_x = line.get_x(self.ye)
-            des_y = self.ye
+            des_x = line.get_x(ye)
+            des_y = ye
             #必ず内側を向くように調整
             turn_angle = self.heading() + rand_angle
         #左の辺にぶつかる場合
         elif loleft > self.heading() >= upleft:
             #print('left')
-            des_x = self.xe
-            des_y = line.get_y(self.xe)
+            des_x = xe
+            des_y = line.get_y(-1 * xe)
             turn_angle = self.heading() - 0.5 * PI + rand_angle
         #下の辺にぶつかる場合
         elif loright > self.heading() >= loleft:
             #print('low')
-            des_x = line.get_x(self.ye)
-            des_y = -1 * self.ye
+            des_x = line.get_x(-1 * ye)
+            des_y = -1 * ye
             turn_angle = self.heading() - rand_angle
         #右の辺にぶつかる場合
         else:
             #print('right')
-            des_x = self.xe
-            des_y = line.get_y(self.xe)
+            des_x = xe
+            des_y = line.get_y(xe)
             turn_angle = self.heading() - 0.5 * PI - rand_angle
         
         #壁にぶつかるまで移動
-        self.goto(des_x * 0.95, des_y * 0.95)
+        self.goto(des_x, des_y)
+        print('des_x = {}'.format(des_x))
+        print('des_y = {}'.format(des_y))
         #回転
         self.right(turn_angle)
         #print('turn angle: {}'.format(turn_angle))
         
-    #動き続ける
+    #動き続ける（ここでは一定回数動くことにする）
     def run(self):
-        while True:
+        for i in range(20):
             self.hit_wall()
